@@ -1,10 +1,18 @@
 import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "@next/font/google";
+import Form from "@/components/Form";
+import Todo from "@/components/Todo";
+import { useState } from "react/cjs/react.production.min";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const [todos, setTodos] = useState([
+    "learn react",
+    "master algorithm",
+    "learn backend",
+  ]);
   return (
     <>
       <Head>
@@ -13,6 +21,21 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <main className="main">
+        <div className="container">
+          <h3 className="heading">Todo App</h3>
+          <Form />
+
+          <ul>
+            {todos.map((todo, index) => (
+              <Todo key={index} todo={todo} />
+            ))}
+          </ul>
+
+          <p className="todo-count">You have 3 todo now</p>
+        </div>
+      </main>
     </>
   );
 }
