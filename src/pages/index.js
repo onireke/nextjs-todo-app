@@ -3,7 +3,9 @@ import Image from "next/image";
 import { Inter } from "@next/font/google";
 import Form from "@/components/Form";
 import Todo from "@/components/Todo";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { db } from "./firebase";
+import { query, collection } from "firbase/firestore";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,6 +15,17 @@ export default function Home() {
     "master algorithm",
     "learn backend",
   ]);
+
+  //Create todo
+  //Read todo from firebase
+
+  useEffect(() => {
+    const q = query(collection(db, "todos"));
+  }, []);
+
+  //Update todon in firebase
+  //Delete todo
+
   return (
     <>
       <Head>
