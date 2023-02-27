@@ -6,7 +6,7 @@ function Todo({ todo }) {
     <li className="todo-main">
       <div className="todo">
         <input type="checkbox" name="" id="" />
-        <p className="task">{todo}</p>
+        <p className="task">{todo.text}</p>
       </div>
       <button>
         <RiDeleteBinLine />

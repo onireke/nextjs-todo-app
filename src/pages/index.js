@@ -5,22 +5,26 @@ import Form from "@/components/Form";
 import Todo from "@/components/Todo";
 import { useState, useEffect } from "react";
 import { db } from "./firebase";
-import { query, collection } from "firbase/firestore";
+import { query, collection, onSnapshot } from "firbase/firestore";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const [todos, setTodos] = useState([
-    "learn react",
-    "master algorithm",
-    "learn backend",
-  ]);
+  const [todos, setTodos] = useState([]);
 
   //Create todo
   //Read todo from firebase
 
   useEffect(() => {
     const q = query(collection(db, "todos"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let todoArr = [];
+      querySnapshot.forEach((doc) => {
+        todoArr.push({ ...doc.data(), id: doc.id });
+      });
+      setTodos(todoArr);
+    });
+    return () => unsubscribe();
   }, []);
 
   //Update todon in firebase
