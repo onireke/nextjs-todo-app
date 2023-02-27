@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Inter } from "@next/font/google";
 import Form from "@/components/Form";
 import Todo from "@/components/Todo";
-import { useState } from "react/cjs/react.production.min";
+import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 

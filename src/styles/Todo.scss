@@ -1,0 +1,12 @@
+.todo-main {
+  @apply flex justify-between bg-slate-200  gap-4  p-4 my-2;
+  .todo {
+    @apply flex gap-2;
+    .task {
+      @apply cursor-pointer;
+    }
+  }
+  button {
+    @apply cursor-pointer;
+  }
+}
