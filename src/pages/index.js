@@ -1,7 +1,8 @@
 import Head from "next/head";
 import Image from "next/image";
+import { HiPlus } from "react-icons/hi";
+
 import { Inter } from "@next/font/google";
-import Form from "@/components/Form";
 import Todo from "@/components/Todo";
 import { useState, useEffect } from "react";
 import { db } from "../firebase";
@@ -11,6 +12,8 @@ import {
   onSnapshot,
   updateDoc,
   doc,
+  addDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { async } from "@firebase/util";
 
@@ -18,12 +21,22 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [todos, setTodos] = useState([]);
+  const [input, setInput] = useState("");
 
   //Create todo
-
   const createTodo = async (e) => {
     e.preventDefault(e);
+    if (input === "") {
+      alert("please enter a valid todo");
+      return;
+    }
+    await addDoc(collection(db, "todos"), {
+      text: input,
+      completed: false,
+    });
+    setInput("");
   };
+
   //Read todo from firebase
 
   useEffect(() => {
@@ -46,6 +59,9 @@ export default function Home() {
     });
   };
   //Delete todo
+  const deleteTodo = async (id) => {
+    await deleteDoc(doc(db, "todos", id));
+  };
 
   return (
     <>
@@ -59,15 +75,33 @@ export default function Home() {
       <main className="main">
         <div className="container">
           <h3 className="heading">Todo App</h3>
-          <Form createTodo={createTodo} />
+          {/* <Form /> */}
+          <form onSubmit={createTodo} className="form-main">
+            <input
+              className="form-input"
+              type="text"
+              placeholder="Add Todo"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
+            <button className="form-button">
+              <HiPlus size={30} />
+            </button>
+          </form>
 
           <ul>
             {todos.map((todo, index) => (
-              <Todo key={index} todo={todo} toggleComplete={toggleComplete} />
+              <Todo
+                key={index}
+                todo={todo}
+                toggleComplete={toggleComplete}
+                deleteTodo={deleteTodo}
+              />
             ))}
           </ul>
-
-          <p className="todo-count">You have 3 todo now</p>
+          {todos.length < 1 ? null : (
+            <p className="todo-count">`You have {todos.length} todo now`</p>
+          )}
         </div>
       </main>
     </>

@@ -1,7 +1,7 @@
 import React from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
 
-function Todo({ todo, toggleComplete }) {
+function Todo({ todo, toggleComplete, deleteTodo }) {
   return (
     <li className="todo-main">
       <div className="todo">
@@ -19,7 +19,7 @@ function Todo({ todo, toggleComplete }) {
           {todo.text}
         </p>
       </div>
-      <button>
+      <button onClick={() => deleteTodo(todo.id)}>
         <RiDeleteBinLine />
       </button>
     </li>
