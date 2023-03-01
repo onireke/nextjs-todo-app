@@ -4,8 +4,15 @@ import { Inter } from "@next/font/google";
 import Form from "@/components/Form";
 import Todo from "@/components/Todo";
 import { useState, useEffect } from "react";
-import { db } from "./firebase";
-import { query, collection, onSnapshot } from "firbase/firestore";
+import { db } from "../firebase";
+import {
+  query,
+  collection,
+  onSnapshot,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
+import { async } from "@firebase/util";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,6 +20,10 @@ export default function Home() {
   const [todos, setTodos] = useState([]);
 
   //Create todo
+
+  const createTodo = async (e) => {
+    e.preventDefault(e);
+  };
   //Read todo from firebase
 
   useEffect(() => {
@@ -27,7 +38,13 @@ export default function Home() {
     return () => unsubscribe();
   }, []);
 
-  //Update todon in firebase
+  //Update todo in firebase
+
+  const toggleComplete = async (todo) => {
+    await updateDoc(doc(db, "todos", "todo.id"), {
+      completed: !todo.completed,
+    });
+  };
   //Delete todo
 
   return (
@@ -42,11 +59,11 @@ export default function Home() {
       <main className="main">
         <div className="container">
           <h3 className="heading">Todo App</h3>
-          <Form />
+          <Form createTodo={createTodo} />
 
           <ul>
             {todos.map((todo, index) => (
-              <Todo key={index} todo={todo} />
+              <Todo key={index} todo={todo} toggleComplete={toggleComplete} />
             ))}
           </ul>
 
